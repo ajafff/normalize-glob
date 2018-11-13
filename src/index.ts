@@ -39,10 +39,17 @@ function* appendPath(result: string[], parts: string[], i: number, prefix: strin
                 break;
             case '..':
                 if (result.pop() === '**') {
-                    yield* appendPath(result.slice(), parts, i + 1, prefix, trailingSlash);
+                    if (i === parts.length - 1)
+                        trailingSlash = true;
+                    yield* appendPath(result.slice(0, -1), parts, i + 1, prefix, trailingSlash);
                     result.push('**');
                 }
                 break;
+            case '**':
+                // collapse multiple globstars into one
+                if (result[result.length - 1] === '**')
+                    break;
+                // falls through
             default:
                 result.push(parts[i]);
         }

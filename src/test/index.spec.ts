@@ -21,4 +21,23 @@ test('resolves . and ..', (t) => {
     t.deepEqual(Array.from(normalizeGlob('.', '/baz')), ['/baz']);
     t.deepEqual(Array.from(normalizeGlob('./', '/baz')), ['/baz/']);
     t.deepEqual(Array.from(normalizeGlob('', '/baz')), ['/baz']);
+    t.deepEqual(Array.from(normalizeGlob('/foo/*/..', '/')), ['/foo']);
+    t.deepEqual(Array.from(normalizeGlob('/foo/./..', '/')), ['/']);
+
+    t.deepEqual(Array.from(normalizeGlob('/foo/bar/**/..', '/')), ['/foo/', '/foo/bar/**/']);
+    t.deepEqual(Array.from(normalizeGlob('/foo/bar/**/../baz', '/')), ['/foo/baz', '/foo/bar/**/baz']);
+    t.deepEqual(Array.from(normalizeGlob('/foo/bar/**/**/..', '/')), ['/foo/', '/foo/bar/**/']);
+});
+
+test('preserves negation', (t) => {
+    t.deepEqual(Array.from(normalizeGlob('!foo', '/bar')), ['!/bar/foo']);
+    t.deepEqual(Array.from(normalizeGlob('!/foo', '/bar')), ['!/foo']);
+    t.deepEqual(Array.from(normalizeGlob('{!foo,/baz,!/bas}', '/bar')), ['!/bar/foo', '/baz', '!/bas']);
+});
+
+test('collapses globstars', (t) => {
+    t.deepEqual(Array.from(normalizeGlob('/foo/**/**', '/')), ['/foo/**']);
+    t.deepEqual(Array.from(normalizeGlob('/foo/**/*', '/')), ['/foo/**/*']);
+    t.deepEqual(Array.from(normalizeGlob('/foo/*/**', '/')), ['/foo/*/**']);
+    t.deepEqual(Array.from(normalizeGlob('/**/**', '/')), ['/**']);
 });
