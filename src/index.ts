@@ -2,17 +2,21 @@ import expandBraces = require('brace-expansion');
 import isNegatedGlob = require('is-negated-glob');
 import path = require('path');
 
+/**
+ * @param input the glob pattern with forward slash as directory separator
+ * @param cwd the absolute path of the current directory with forward slash or backslash as directory separator.
+ */
 export function* normalizeGlob(input: string, cwd: string) {
     for (let pattern of expandBraces(input)) {
         const trailingSlash = pattern.endsWith('/');
         const ing = isNegatedGlob(pattern);
         pattern = ing.pattern;
-        let {root} = path.parse(input);
+        let {root} = path.parse(pattern);
         let parts;
         if (root) {
             parts = pattern.substr(root.length).split(/\/+/g);
             if (root.endsWith('/'))
-                root.slice(0, -1);
+                root = root.slice(0, -1);
         } else {
             ({root} = path.parse(cwd));
             parts = [...cwd.substr(root.length).split(/[/\\]+/g), ...pattern.split(/\/+/g)];
