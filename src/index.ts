@@ -22,8 +22,7 @@ export function* normalizeGlob(input: string, cwd: string) {
             if (!root)
                 throw new Error("'cwd' must be an absolute path");
             parts = [...cwd.substr(root.length).split(/[/\\]+/g), ...pattern.split(/\/+/g)];
-            if (root.endsWith('\\'))
-                root = root.slice(0, -1) + '/';
+            root = root.replace(/\\$/, '/');
         }
         if (ing.negated)
             root = '!' + root;
