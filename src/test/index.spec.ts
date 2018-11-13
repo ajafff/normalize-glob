@@ -40,6 +40,7 @@ test('collapses globstars', (t) => {
     t.deepEqual(Array.from(normalizeGlob('/foo/**/*', '/')), ['/foo/**/*']);
     t.deepEqual(Array.from(normalizeGlob('/foo/*/**', '/')), ['/foo/*/**']);
     t.deepEqual(Array.from(normalizeGlob('/**/**', '/')), ['/**']);
+    t.deepEqual(Array.from(normalizeGlob('/foo/**/../**', '/')), ['/**', '/foo/**']);
 });
 
 test('ignores cwd if glob is absolute', (t) => {
