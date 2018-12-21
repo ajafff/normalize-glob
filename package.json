@@ -34,8 +34,8 @@
   },
   "homepage": "https://github.com/ajafff/normalize-glob#readme",
   "devDependencies": {
-    "@fimbul/valtyr": "^0.16.0",
-    "@fimbul/wotan": "^0.16.0",
+    "@fimbul/valtyr": "^0.17.0",
+    "@fimbul/wotan": "^0.17.0",
     "@types/brace-expansion": "^1.1.0",
     "@types/is-negated-glob": "^1.0.0",
     "@types/node": "^10.9.4",
