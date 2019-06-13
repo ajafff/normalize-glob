@@ -16,14 +16,14 @@ export function* normalizeGlob(input: string, cwd: string) {
         let {root} = path.parse(pattern);
         let parts;
         if (root) {
-            parts = pattern.substr(root.length).split(/\/+/g);
+            parts = pattern.substr(root.length).split(/[/\\]+/g);
         } else {
             ({root} = path.parse(cwd));
             if (!root)
                 throw new Error("'cwd' must be an absolute path");
-            parts = [...cwd.substr(root.length).split(/[/\\]+/g), ...pattern.split(/\/+/g)];
-            root = root.replace(/\\$/, '/');
+            parts = [...cwd.substr(root.length).split(/[/\\]+/g), ...pattern.split(/[/\\]+/g)];
         }
+        root = root.replace(/\\$/, '/');
         if (ing.negated)
             root = '!' + root;
         yield* appendPath([], parts, 0, root, trailingSlash);
