@@ -55,6 +55,13 @@ test('throws if glob and cwd are not absolute', (t) => {
 
 if (platform() === 'win32') {
     test('handles windows paths', (t) => {
+        t.deepEqual(Array.from(normalizeGlob('C:', 'C:\\')), ['C:']);
+        t.deepEqual(Array.from(normalizeGlob('C:/', 'C:\\')), ['C:/']);
+        t.deepEqual(Array.from(normalizeGlob('C:\\', 'C:\\')), ['C:\\']);
+        t.deepEqual(Array.from(normalizeGlob('', 'C:\\')), ['C:/']);
+        t.deepEqual(Array.from(normalizeGlob('', 'C:')), ['C:/']);
+        t.deepEqual(Array.from(normalizeGlob('./', 'C:')), ['C:/']);
+        t.deepEqual(Array.from(normalizeGlob('foo', 'C:')), ['C:/foo']);
         t.deepEqual(Array.from(normalizeGlob('C:\\foo\\bar', 'C:\\')), ['C:\\foo\\bar']);
         t.deepEqual(Array.from(normalizeGlob('foo\\bar', 'C:/baz')), ['C:/baz/foo\\bar']);
     });
