@@ -1,5 +1,6 @@
 import test from 'ava';
 import { normalizeGlob } from '..';
+import { platform } from 'os';
 
 test('expands curly braces', (t) => {
     t.deepEqual(Array.from(normalizeGlob('/{foo,bar}/{baz/,bas}', '/')), ['/foo/baz/', '/foo/bas', '/bar/baz/', '/bar/bas']);
@@ -51,3 +52,14 @@ test('ignores cwd if glob is absolute', (t) => {
 test('throws if glob and cwd are not absolute', (t) => {
     t.throws(() => Array.from(normalizeGlob('foo', 'bar')));
 });
+
+if (platform() === 'win32') {
+    test('handles windows paths', (t) => {
+        t.deepEqual(Array.from(normalizeGlob('C:\\foo\\bar', 'C:\\')), ['C:\\foo\\bar']);
+        t.deepEqual(Array.from(normalizeGlob('foo\\bar', 'C:/baz')), ['C:/baz/foo\\bar']);
+    });
+
+    test("doesn't treat escapes as directory separator", (t) => {
+        t.deepEqual(Array.from(normalizeGlob('foo\\*', 'C:\\')), ['C:/foo\\*']);
+    });
+}
