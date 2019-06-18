@@ -60,6 +60,6 @@ if (platform() === 'win32') {
     });
 
     test("doesn't treat escapes as directory separator", (t) => {
-        t.deepEqual(Array.from(normalizeGlob('foo\\*', 'C:\\')), ['C:/foo\\*']);
+        t.deepEqual(Array.from(normalizeGlob('foo\\*/..', 'C:\\')), ['C:/']);
     });
 }
