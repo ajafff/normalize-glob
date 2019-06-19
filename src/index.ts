@@ -22,7 +22,7 @@ export function* normalizeGlob(input: string, cwd: string) {
             if (!root)
                 throw new Error("'cwd' must be an absolute path");
             parts = [...cwd.substr(root.length).split(/[/\\]+/g), ...pattern.split(/\/+/g)];
-            root = root.replace(/\\$/, '/');
+            root = ensureTrailingSlash(root.replace(/\\$/, ''));
         }
         if (ing.negated)
             root = '!' + root;
@@ -53,14 +53,8 @@ function* appendPath(result: string[], parts: string[], i: number, prefix: strin
                 result.push(parts[i]);
         }
     }
-    const joined = join(prefix, result.join('/'));
+    const joined = prefix + result.join('/');
     yield trailingSlash ? ensureTrailingSlash(joined) : joined;
-}
-
-function join(prefix: string, suffix: string) {
-    if (!suffix)
-        return prefix;
-    return ensureTrailingSlash(prefix) + suffix;
 }
 
 function ensureTrailingSlash(p: string) {
