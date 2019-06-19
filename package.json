@@ -1,6 +1,6 @@
 {
   "name": "normalize-glob",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Normalize a glob pattern by expanding braces, making it absolute and resolving parent directories '..'",
   "main": "dist/index",
   "files": [
