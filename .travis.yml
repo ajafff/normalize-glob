@@ -3,9 +3,10 @@ os:
   - linux
 language: node_js
 node_js:
-  - '8'
   - '10'
-  - '11'
+  - '12'
+  - '14'
+  - '15'
 env:
   - YARN_GPG=no
 script:
